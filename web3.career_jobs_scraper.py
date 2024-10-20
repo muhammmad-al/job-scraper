@@ -41,7 +41,9 @@ def scrape_webpage(page):
 #initialize the CSV header
 jobs_data = "role,company,salary,link\n"
 
-for i in range(1, 20):       
+#start scraping from the first page
+
+for i in range(1, 1000):       
     print("Scraping page", i)
     # Scrape the current page and append the returned job data to jobs_data
     jobs_data += scrape_webpage(i)
