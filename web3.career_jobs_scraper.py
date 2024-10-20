@@ -14,12 +14,29 @@ def scrape_webpage(page):
 
     #initialize an empty string to store job data
     jobs_data = ""
+    
+    # Define keyword lists for filtering
+    entry_level_keywords = [
+        "entry level", "0-1 years", "0-2 years", "junior", "graduate", "entry-level"
+    ]
+    engineering_keywords = [
+        "engineer", "developer", "programmer", "software", "blockchain", "data",
+        "frontend", "backend", "fullstack", "full-stack", "solidity", "python", "javascript"
+    ]
 
     #loop through each row in the jobs table
     for i in table_section.find_all("tr"):
         try:
             # Extract the job role text from the <h2> tag
             role = i.h2.text.strip()
+            role_lower = role.lower() #convert to lowercase for keyword matching
+
+            #apply filters
+            if not any(keyword in role_lower for keyword in entry_level_keywords):
+                continue #skipt his job if it doesnt match entry-level keywords
+            
+            if not any(keyword in role_lower for keyword in engineering_keywords):
+                continue
 
             # Extract the company name from the <h3> tag
             company = i.h3.text.strip()
@@ -43,7 +60,7 @@ jobs_data = "role,company,salary,link\n"
 
 #start scraping from the first page
 
-for i in range(1, 1000):       
+for i in range(1, 100):       
     print("Scraping page", i)
     # Scrape the current page and append the returned job data to jobs_data
     jobs_data += scrape_webpage(i)
